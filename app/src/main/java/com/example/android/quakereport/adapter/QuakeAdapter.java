@@ -18,7 +18,7 @@ import android.support.v4.content.ContextCompat;
 public class QuakeAdapter extends BaseAdapter {
 
     Activity activity;
-    public static ArrayList<Earthquake> data;
+    public static  ArrayList<Earthquake> data;
     private static final String LOCATION_SEPARATOR = " of ";
 
 
@@ -137,11 +137,10 @@ public class QuakeAdapter extends BaseAdapter {
         magnitudeCircle.setColor(magnitudeColor);
 
 
-
-        final TextView primaryLocationView = (TextView) root.findViewById(R.id.primary_location);
-        final TextView locationOffsetView = (TextView) root.findViewById(R.id.location_offset);
-        final TextView quakeTime = (TextView) root.findViewById(R.id.time);
-        final TextView quakeDate = (TextView) root.findViewById(R.id.date);
+        final TextView primaryLocationView = root.findViewById(R.id.primary_location);
+        final TextView locationOffsetView = root.findViewById(R.id.location_offset);
+        final TextView quakeTime = root.findViewById(R.id.time);
+        final TextView quakeDate = root.findViewById(R.id.date);
         // Create a new Date object from the time in milliseconds of the earthquake
         Date dateObject = new Date(data.get(i).getMTimeInMilliseconds());
         // Format the date string (i.e. "Mar 3, 1984")

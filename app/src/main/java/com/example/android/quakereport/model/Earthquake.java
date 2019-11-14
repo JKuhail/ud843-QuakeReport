@@ -1,8 +1,6 @@
 package com.example.android.quakereport.model;
 
-import java.net.URI;
-import java.net.URL;
-import java.util.Date;
+
 
 public class Earthquake {
     private double magnitude;
