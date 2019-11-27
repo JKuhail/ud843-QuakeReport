@@ -1,5 +1,6 @@
 package com.example.android.quakereport;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,15 +29,21 @@ import java.util.ArrayList;
 
 public class EarthquakeActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
-    public static final String LOG_TAG = "jehad";
+    private static final String LOG_TAG = "jehad";
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2012-01-01&endtime=2012-12-01&minmagnitude=6";
-    ArrayList<Earthquake> data = new ArrayList<>();
+    private ArrayList<Earthquake> data = new ArrayList<>();
+    private QuakeAdapter quakeAdapter;
+    private ListView earthquakeListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+
+        earthquakeListView = (ListView) findViewById(R.id.list);
+        quakeAdapter =new QuakeAdapter(this , data);
+        earthquakeListView.setAdapter(quakeAdapter);
 
         showDialog();
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, USGS_REQUEST_URL, null,
@@ -64,26 +71,25 @@ public class EarthquakeActivity extends AppCompatActivity {
                             Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
                             hideDialog();
                         }
-
+                        quakeAdapter.notifyDataSetChanged();
                         hideDialog();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(LOG_TAG, error.getMessage());
+                AlertDialog.Builder add = new AlertDialog.Builder(EarthquakeActivity.this);
+                add.setMessage(error.getMessage()).setCancelable(true);
+                AlertDialog alert = add.create();
+                alert.setTitle("Error!!!");
+                alert.show();
                 hideDialog();
             }
         });
 
         AppController.getInstance().addToRequestQueue(objectRequest);
 
-        // Find a reference to the {@link ListView} in the layout
-        final ListView earthquakeListView = (ListView) findViewById(R.id.list);
-        // Create a new {@link ArrayAdapter} of earthquakes
-        final QuakeAdapter quakeAdapter =new QuakeAdapter(this , data);
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(quakeAdapter);
+
+
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -17,8 +17,8 @@ import android.support.v4.content.ContextCompat;
 
 public class QuakeAdapter extends BaseAdapter {
 
-    Activity activity;
-    public static  ArrayList<Earthquake> data;
+    private Activity activity;
+    public static ArrayList<Earthquake> data;
     private static final String LOCATION_SEPARATOR = " of ";
 
 
